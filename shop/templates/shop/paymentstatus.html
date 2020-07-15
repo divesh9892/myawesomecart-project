@@ -1,0 +1,55 @@
+{% extends 'shop/basic.html' %}
+{% block title%} Payment Status{% endblock %}
+{% block body %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div class="container">
+    {{response}}
+    <div class="col my-4">
+        <h2>Payment status regarding your order id {{response.ORDERID}} </h2>
+        {%if response.RESPCODE == '01'%}
+        
+        ORDER SUCCESS
+        {%else%}
+       
+        ORDER FAILURE
+        {%endif%}
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+	alert('{{response.RESPCODE}}');
+localStorage.clear();
+alert('{{response.RESPCODE}}');
+var varcode = '{{response.RESPCODE}}' ;
+alert(varcode);
+if (varcode == '01'){
+swal({
+  title: "Order Success",
+  text: "Order placed successfully :)",
+  icon: "success",
+  buttons: true,
+  dangerMode: false,
+})
+.then((varcode) => {
+  if (varcode) {
+    window.location.replace("/shop/orderhistory");
+  }
+});
+}
+else{
+swal({
+  title: "Order Failed",
+  text: "Payment failed :(",
+  icon: "error",
+  buttons: true,
+  dangerMode: true,
+})
+.then((varcode) => {
+  if (varcode) {
+    window.location.replace("/shop/orderhistory");
+  }
+});
+}
+</script>
+{% endblock %}

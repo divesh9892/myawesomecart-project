@@ -1,0 +1,46 @@
+{% extends 'shop/basic.html' %}
+{% block title%} My Awesome Cart Tracker{% endblock %}
+{% block body %}
+
+
+<h2 class="my-4">Order Details</h2>
+
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Order Id</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Amount</th>
+      <th scope="col">View</th>
+      <th scope="col">Invoice</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for item in context%}
+    
+    <tr>
+      <th scope="row">{{item.order_id}}</th>
+      <td>{{item.name}}</td>
+      <td>{{item.quantity}}</td>
+      <td>Rs. {{item.amount}}</td>
+      <td><a href="/shop/products/{{item.prod_id}}"><button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a></td>
+      <td><a href="/shop/invoice/{{item.order_id}}"><button class="btn btn-primary"><i class="fas fa-receipt"></i> Invoice</button></a></td>
+    </tr>
+    <!-- <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr> -->
+  </tbody>
+  {%endfor%}
+</table>
+
+
+{%endblock%}

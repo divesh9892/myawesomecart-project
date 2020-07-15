@@ -1,0 +1,14 @@
+{% extends 'shop/basic.html' %}
+{%block body%}
+
+{{user}}
+    <h1>New comment</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-primary">Send</button>
+    </form>
+<script>
+document.getElementById('id_author').setAttribute('readonly','')
+document.getElementById('id_author').setAttribute('value', '{{user}}')
+</script>
+{% endblock %}

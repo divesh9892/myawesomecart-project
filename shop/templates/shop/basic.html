@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!--   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ -->
+    <title>{% block title%} {% endblock %}</title>
+    <style>
+        {% block css %} {% endblock %}
+      body{
+       background-color:#eaeded;
+     }
+      .form-control{
+        height:50px;
+
+        border-radius: 15px;
+      }
+      
+  </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/shop"><i class="fa fa-shopping-bag" aria-hidden="true"></i> My Awesome Cart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/shop"><i class="fa fa-home" aria-hidden="true"></i> Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/orderhistory"><i class="fab fa-product-hunt"></i> Your Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/about"><i class="fa fa-info-circle" aria-hidden="true"></i> About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/tracker"><i class="fa fa-truck" aria-hidden="true"></i> Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog"><i class="fa fa-rss" aria-hidden="true"></i> Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/contact"><i class="fa fa-address-book" aria-hidden="true"></i> Contact Us</a>
+                </li>
+                <<!-- li class="nav-item">
+                    <a class="nav-link" href="/">Hello, {{request.user}}</a>
+                    </li>
+                    {%if user.is_authenticated%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop/logout">Logout</a>
+                    </li>
+                    {%else%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop/login">Login</a>
+                    </li>
+                    {%endif%} -->
+            </ul>
+            <!-- <form method='get' action='/shop/search/' class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="fa fa-user-circle" aria-hidden="true"></i> Hello, {{request.user}}</a>
+                </li>
+                {%if user.is_authenticated%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/logout"><i class="fas fa-sign-in-alt"></i> Logout</a>
+                </li>
+                {%else%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                {%endif%}
+                <li class="nav-item">
+                    <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus."><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        Cart(<span id="cart">0</span>)
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    {% block body %} {% endblock %}
+    <!-- footer -->
+    <footer class="footer py-3 mt-4" style="background-color: #2c292f">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-4 text-center text-md-left ">
+                    <div class="py-0">
+                        <h3 class="my-4 text-white">About<span class="mx-2 font-italic text-primary">My Awesome Cart</span></h3>
+                        <p class="footer-links font-weight-bold">
+                            <a class="text-white" href="{%url 'ShopHome'%}">Home</a>
+                            |
+                            <a class="text-white" href="{%url 'blogHome'%}">Blog</a>
+                            |
+                            <a class="text-white" href="{%url 'AboutUs'%}">About</a>
+                            |
+                            <a class="text-white" href="{%url 'ContactUs'%}">Contact</a>
+                        </p>
+                        <p class="text-light py-4 mb-4">&copy;2020 My Awesome Cart Pvt. Ltd.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-white text-center text-md-left ">
+                    <div class="py-2 my-4">
+                        <div>
+                            <p class="text-white"> <i class="fa fa-map-marker mx-2 "></i>
+                                309 - XYZ,
+                                Bldg. No. XYZ - 1, Sector - 1
+                                XYZ, ABCXYZ - 999999</p>
+                        </div>
+                        <div>
+                            <p><i class="fa fa-phone  mx-2 "></i> +91 9999999999</p>
+                        </div>
+                        <div>
+                            <p><i class="fa fa-envelope  mx-2"></i><a href="mailto:support@myawesomecart.com">support@myawesomecart.com</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-white my-4 text-center text-md-left ">
+                    <span class=" font-weight-bold ">About the Company</span>
+                    <p class="text-primary my-2">My Awesome Cart - One place for all your shopping needs</p>
+                    <div class="py-2">
+                        <a href="#"><i class="fab fa-facebook fa-2x text-primary mx-3"></i></a>
+                        <a href="#"><i class="fab fa-google-plus fa-2x text-danger mx-3"></i></a>
+                        <a href="#"><i class="fab fa-twitter fa-2x text-info mx-3"></i></a>
+                        <a href="#"><i class="fab fa-youtube fa-2x text-danger mx-3"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- end of footer -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    {% block js %} {% endblock %}
+</body>
+
+</html>

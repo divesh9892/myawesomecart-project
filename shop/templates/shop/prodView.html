@@ -1,0 +1,193 @@
+{%extends 'shop/basic.html' %}
+{%block title%} {{product.product_name}} - My Awesome Cart  {% endblock %}
+{%block body%}
+{% load ratings %}
+  {% load static %}
+
+
+<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+<style>
+    .pagination{
+    text-align: center;
+    margin-top: 1em;
+    }
+    .pagination-action{
+    margin: 0 0.1em;
+    display: inline-block;
+    padding: 0.5em;
+    color: #B9B9B9;
+    font-size: 1.3em;
+    }
+    .pagination-action:hover{
+    color: #3354AA;
+    }
+    .pagination-number{
+    background-color: #6D85C7;
+    padding: 0.5em 0.8em;
+    color: #fff;
+    border-radius: 2px;
+    }
+    .pagination-number:hover, .pagination-current{
+    background-color: #3354AA;
+    color: white;
+    }
+</style>
+
+<form method='get' action='/shop/search/' class="col-lg-6 offset-lg-3 my-5">
+   <div class="row justify-content-center">
+      <input class="form-control mr-sm-2  my-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search"> 
+      <button class="btn btn-outline-primary my-2 my-sm-0 my-2" type="submit"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    </div>
+    </form> 
+<div class="container my-4">
+    <div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <img src="/media/{{product.image}}" width="250px" height="250px">
+        </div>
+        <div class="row my-3">
+            <button class="btn btn-primary mx-3 ">Buy Now</button>
+            <button class="btn btn-primary">Add to Cart</button>
+
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h5>{{product.product_name}}</h5>
+        <p><b>Rs.{{product.price}}</b></p>
+        <p>{{product.desc}}</p>
+
+    </div>
+        </div>
+</div>
+{% ratings product %}
+
+<hr>
+
+<p>Comments: {{ comments.paginator.count }}</p>
+<hr>
+
+{%for comment in comments%}
+{% if user.is_authenticated or comment.approved_comment %}
+<div class="comment">
+    <div class="date">
+        {{comment.created_date}}
+        {% if  user.is_staff and not comment.approved_comment %}
+
+<!--    <a onclick="setGetParameter({{comment.pk}})"  class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>-->
+        <a onclick="setGetParameter({{comment.pk}})"  class="btn btn-default"><i class="fa fa-times" aria-hidden="true"></i></a>
+<!--        <a onclick="approved({{comment.pk}})" class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check" aria-hidden="true"></i></a>-->
+        <a onclick="approved({{comment.pk}})" class="btn btn-default" ><i class="fa fa-check" aria-hidden="true"></i></a>
+        {% endif %}
+    </div>
+    <strong>{{comment.author}}</strong>
+    <p>{{comment.text|linebreaks}}</p>
+</div>
+{% endif %}
+<hr>
+{%empty%}
+<p>No comments here yet</p>
+{%endfor%}
+
+<div class="pagination">
+    {%if comments.has_previous%}
+    <a href="?page=1" class="pagination-action"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+    <a href="?page={{comments.previous_page_number}}" class="pagination-action"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+    {%endif%}
+
+    {%for num in comments.paginator.page_range%}
+
+    {%if comments.number == num%}
+
+        <span class="pagination-number pagination-current">{{ num }}</span>
+
+    {%elif num > comments.number|add:'-10' and num < comments.number|add:'10'%}
+
+    <a class="pagination-number" href="?page={{num}}">{{ num }}</a>
+
+    {%endif%}
+    {%endfor%}
+
+    {%if comments.has_next%}
+    <a href="?page={{comments.next_page_number}}" class="pagination-action"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+    <a href="?page={{comments.paginator.num_pages}}" class="pagination-action"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+    {%endif%}
+<!--    {{comments.has_previous}}-->
+<!--    {{comments.number}}-->
+<!--    {{comments.paginator.count}}-->
+<!--    {{comments.paginator.num_page}}-->
+<!--    {{comments.paginator.page_range}}-->
+<!--    {{comments.has_next}}-->
+</div>
+<a class="btn btn-primary" href="{% url 'add_comment_to_post' pk=product.pk %}">Add comment</a>
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+if(localStorage.getItem('cart') == null){
+var cart = {};
+}
+else
+{
+cart = JSON.parse(localStorage.getItem('cart'));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+}
+$('.cart').click(function(){
+
+var idstr = this.id.toString();
+
+if (cart[idstr] !=undefined){
+cart[idstr] = cart[idstr] + 1;
+}
+else
+{
+cart[idstr] = 1;
+}
+
+localStorage.setItem('cart', JSON.stringify(cart));
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+});
+$('#popcart').popover();
+document.getElementById("popcart").setAttribute('data-content', '<h5>Cart for your items in my shopping cart</h5>');
+
+
+
+function setGetParameter(a){
+    var prod_id = {{product.pk}};
+
+    var_pk = a;
+
+    $.ajax({
+      type: "POST",
+      url: '/'+'shop'+'/'+'comment'+'/'+var_pk+'/'+'remove'+'/',
+      data: {data: prod_id },
+      success: function(result){
+        location.reload(true);
+      }
+    });
+
+
+}
+
+function approved(b){
+    var prod_id = {{product.pk}};
+
+    var_pk = b;
+
+    $.ajax({
+      type: "POST",
+      url: '/'+'shop'+'/'+'comment'+'/'+var_pk+'/'+'approve'+'/',
+      data: {data: prod_id },
+      success: function(result){
+        location.reload(true);
+      }
+    });
+
+
+}
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+asgiref==3.2.3
+Django==3.0.3
+django-braces==1.14.0
+django-model-utils==4.0.0
+django-star-ratings==0.9.1
+gunicorn==20.0.4
+Pillow==7.0.0
+pycryptodome==3.9.7
+PyPDF2==1.26.0
+python-decouple==3.3
+pytz==2019.3
+six==1.15.0
+sqlparse==0.3.0
+swapper==1.1.2.post1
+webencodings==0.5.1
+whitenoise==5.1.0
